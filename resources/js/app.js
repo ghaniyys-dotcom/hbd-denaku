@@ -405,67 +405,61 @@ document.addEventListener('DOMContentLoaded', () => {
             playMusic();
         }
 
-        gsap.to(loaderEl, {
+        // Step 1: Fade out loader text content first
+        gsap.to(loaderEl.querySelector('.relative.z-10'), {
             opacity: 0,
-            scale: 1.05,
-            duration: 0.8,
-            ease: 'power3.inOut',
+            duration: 0.4,
+            ease: 'power2.in',
             onComplete: () => {
-                loaderEl.style.display = 'none';
-                loaderEl.remove();
+                // Step 2: Sparkle burst
+                const sparkles = document.getElementById('curtain-sparkles');
+                if (sparkles) gsap.to(sparkles, { opacity: 1, duration: 0.3, ease: 'power2.out' });
 
-                contentEl.classList.remove('hidden');
-                contentEl.style.opacity = '1';
-
-                const player = document.getElementById('floating-music-player');
-                if (player) {
-                    player.style.opacity = '1';
-                    player.style.transform = 'none';
-                }
-
-                runHeroTypewriter();
-
+                // Step 3: Curtain opens (left slides left, right slides right)
                 const curtainLeft = document.getElementById('curtain-left');
                 const curtainRight = document.getElementById('curtain-right');
-                const curtainSparkles = document.getElementById('curtain-sparkles');
-                const curtainOverlay = document.getElementById('curtain-overlay');
 
                 if (curtainLeft && curtainRight) {
-                    gsap.delayedCall(0.3, () => {
-                        if (curtainSparkles) {
-                            gsap.to(curtainSparkles, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-                        }
-
-                        gsap.to(curtainLeft, {
-                            x: '-100%',
-                            duration: 1.8,
-                            ease: 'elastic.out(1, 0.75)',
-                            onComplete: () => {
-                                if (curtainOverlay) curtainOverlay.style.display = 'none';
-                            }
-                        });
-                        gsap.to(curtainRight, {
-                            x: '100%',
-                            duration: 1.8,
-                            ease: 'elastic.out(1, 0.75)',
-                        });
-
-                        gsap.delayedCall(1.2, () => {
-                            if (curtainSparkles) {
-                                gsap.to(curtainSparkles, { opacity: 0, duration: 0.8, ease: 'power2.in' });
-                            }
-                        });
-
-                        gsap.delayedCall(0.5, () => {
-                            confetti({
-                                particleCount: 80,
-                                spread: 70,
-                                origin: { y: 0.5 },
-                                colors: ['#ff85a1', '#ffb7c5', '#ffd1dc', '#ff69b4', '#dda0dd']
-                            });
-                        });
+                    gsap.to(curtainLeft, {
+                        x: '-100%',
+                        duration: 1.6,
+                        ease: 'power3.inOut',
                     });
+                    gsap.to(curtainRight, {
+                        x: '100%',
+                        duration: 1.6,
+                        ease: 'power3.inOut',
+                    });
+
+                    // Confetti burst as curtain opens
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 60,
+                            spread: 80,
+                            origin: { y: 0.5 },
+                            colors: ['#ff85a1', '#ffb7c5', '#ffd1dc', '#ff69b4', '#dda0dd']
+                        });
+                    }, 400);
                 }
+
+                // Step 4: After curtain fully open, remove loader & reveal content
+                setTimeout(() => {
+                    loaderEl.remove();
+
+                    contentEl.classList.remove('hidden');
+                    contentEl.style.opacity = '1';
+
+                    const player = document.getElementById('floating-music-player');
+                    if (player) {
+                        player.style.opacity = '1';
+                        player.style.transform = 'none';
+                    }
+
+                    runHeroTypewriter();
+
+                    // Fade out sparkles
+                    if (sparkles) gsap.to(sparkles, { opacity: 0, duration: 0.5 });
+                }, 1800);
             }
         });
     };

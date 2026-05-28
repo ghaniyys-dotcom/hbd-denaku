@@ -21,21 +21,22 @@
     <!-- U-SHAPE CURTAIN FLOATING BACKGROUND POLAROIDS -->
     <!-- -------------------------------------------------------------------------- -->
     <!-- Card 1: Left-Most -->
-    <div class="absolute top-[10%] left-[4%] rotate-[-15deg] z-10 hidden md:block hover:z-30 hover:-translate-y-4 hover:scale-[1.05] transition-all duration-300 cursor-pointer shadow-lg animate-float-slow">
-        <div class="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[1.5px] h-[150px] bg-gradient-to-b from-transparent via-pink-300/30 to-pink-500/50 pointer-events-none origin-bottom"></div>
-        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-amber-600/80 rounded-sm shadow-sm flex items-center justify-center font-sans text-[8px] text-white font-extrabold rotate-[12deg] z-40 select-none">📌</div>
-        <div class="polaroid-frame w-[160px] md:w-[185px] bg-white rounded-sm p-3 flex flex-col items-center">
+    <div class="absolute top-[10%] left-[2%] sm:left-[4%] rotate-[-12deg] sm:rotate-[-15deg] z-10 hover:z-30 hover:-translate-y-4 hover:scale-[1.05] transition-all duration-300 cursor-pointer shadow-lg animate-float-slow">
+        <!-- String (hidden on very small screens) -->
+        <div class="absolute top-[-80px] sm:top-[-150px] left-1/2 -translate-x-1/2 w-[1.5px] h-[80px] sm:h-[150px] bg-gradient-to-b from-transparent via-pink-300/30 to-pink-500/50 pointer-events-none origin-bottom hidden sm:block"></div>
+        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-amber-600/80 rounded-sm shadow-sm flex items-center justify-center font-sans text-[6px] sm:text-[8px] text-white font-extrabold rotate-[12deg] z-40 select-none">📌</div>
+        <div class="polaroid-frame w-[90px] sm:w-[130px] md:w-[185px] bg-white rounded-sm p-2 sm:p-3 flex flex-col items-center">
             <div class="relative w-full aspect-square bg-romantic-pink-light rounded-sm overflow-hidden border border-romantic-pink/10 flex items-center justify-center group">
                 @if($leftHero && $leftHero->image_path && file_exists(public_path($leftHero->image_path)))
                     <img src="{{ asset($leftHero->image_path) }}" alt="Our hug" class="w-full h-full object-cover">
                 @else
-                    <div class="absolute inset-0 bg-gradient-to-tr from-pink-300/40 to-romantic-gold/30 flex flex-col items-center justify-center p-3 text-center">
-                        <span class="text-2xl animate-pulse">{{ $leftHero->emoji ?? '🧸' }}</span>
-                        <span class="font-romantic text-base text-pink-600/80 mt-1">{{ $leftHero->caption ?? 'Cuddles' }}</span>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-pink-300/40 to-romantic-gold/30 flex flex-col items-center justify-center p-2 sm:p-3 text-center">
+                        <span class="text-lg sm:text-2xl animate-pulse">{{ $leftHero->emoji ?? '🧸' }}</span>
+                        <span class="font-romantic text-[10px] sm:text-base text-pink-600/80 mt-1 hidden sm:block">{{ $leftHero->caption ?? 'Cuddles' }}</span>
                     </div>
                 @endif
             </div>
-            <p class="mt-2 font-romantic text-base text-pink-600/90 leading-none">{{ $leftHero->caption ?? 'Hugs For You 🫂' }}</p>
+            <p class="mt-1.5 sm:mt-2 font-romantic text-[10px] sm:text-base text-pink-600/90 leading-none">{{ $leftHero->caption ?? 'Hugs For You 🫂' }}</p>
         </div>
     </div>
 
@@ -78,21 +79,22 @@
     </div>
 
     <!-- Card 5: Right-Most -->
-    <div class="absolute top-[10%] right-[4%] rotate-[15deg] z-10 hidden md:block hover:z-30 hover:-translate-y-4 hover:scale-[1.05] transition-all duration-300 cursor-pointer shadow-lg animate-float-fast">
-        <div class="absolute top-[-150px] left-1/2 -translate-x-1/2 w-[1.5px] h-[150px] bg-gradient-to-b from-transparent via-pink-300/30 to-pink-500/50 pointer-events-none origin-bottom"></div>
-        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-amber-600/80 rounded-sm shadow-sm flex items-center justify-center font-sans text-[8px] text-white font-extrabold rotate-[-12deg] z-40 select-none">📌</div>
-        <div class="polaroid-frame w-[160px] md:w-[185px] bg-white rounded-sm p-3 flex flex-col items-center">
+    <div class="absolute top-[10%] right-[2%] sm:right-[4%] rotate-[12deg] sm:rotate-[15deg] z-10 hover:z-30 hover:-translate-y-4 hover:scale-[1.05] transition-all duration-300 cursor-pointer shadow-lg animate-float-fast">
+        <!-- String -->
+        <div class="absolute top-[-80px] sm:top-[-150px] left-1/2 -translate-x-1/2 w-[1.5px] h-[80px] sm:h-[150px] bg-gradient-to-b from-transparent via-pink-300/30 to-pink-500/50 pointer-events-none origin-bottom hidden sm:block"></div>
+        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-amber-600/80 rounded-sm shadow-sm flex items-center justify-center font-sans text-[6px] sm:text-[8px] text-white font-extrabold rotate-[-12deg] z-40 select-none">📌</div>
+        <div class="polaroid-frame w-[90px] sm:w-[130px] md:w-[185px] bg-white rounded-sm p-2 sm:p-3 flex flex-col items-center">
             <div class="relative w-full aspect-square bg-romantic-pink-light rounded-sm overflow-hidden border border-romantic-pink/10 flex items-center justify-center group">
                 @if($rightHero && $rightHero->image_path && file_exists(public_path($rightHero->image_path)))
                     <img src="{{ asset($rightHero->image_path) }}" alt="BeautifulSunset" class="w-full h-full object-cover">
                 @else
-                    <div class="absolute inset-0 bg-gradient-to-tr from-lavender-200/40 to-romantic-pink/30 flex flex-col items-center justify-center p-3 text-center">
-                        <span class="text-2xl animate-pulse">{{ $rightHero->emoji ?? '🌅' }}</span>
-                        <span class="font-romantic text-base text-pink-600/80 mt-1">{{ $rightHero->caption ?? 'My Sunset' }}</span>
+                    <div class="absolute inset-0 bg-gradient-to-tr from-lavender-200/40 to-romantic-pink/30 flex flex-col items-center justify-center p-2 sm:p-3 text-center">
+                        <span class="text-lg sm:text-2xl animate-pulse">{{ $rightHero->emoji ?? '🌅' }}</span>
+                        <span class="font-romantic text-[10px] sm:text-base text-pink-600/80 mt-1 hidden sm:block">{{ $rightHero->caption ?? 'My Sunset' }}</span>
                     </div>
                 @endif
             </div>
-            <p class="mt-2 font-romantic text-base text-pink-600/90 leading-none">{{ $rightHero->caption ?? 'Senja terindah 🌸' }}</p>
+            <p class="mt-1.5 sm:mt-2 font-romantic text-[10px] sm:text-base text-pink-600/90 leading-none">{{ $rightHero->caption ?? 'Senja terindah 🌸' }}</p>
         </div>
     </div>
 
@@ -103,7 +105,11 @@
         <!-- Main Anchored Polaroid Above Title -->
         <div id="hero-center-polaroid" class="mb-10 transform hover:scale-[1.04] transition-transform duration-500 cursor-pointer origin-top pointer-events-auto shadow-2xl relative animate-float-slow">
             <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/70 backdrop-blur-sm border border-dashed border-romantic-pink-dark/40 rotate-[-3deg] z-30 shadow-sm flex items-center justify-center font-sans text-[9px] uppercase tracking-widest text-romantic-pink-dark">My Queen</div>
-            <div class="polaroid-frame w-[220px] sm:w-[250px] md:w-[275px] bg-white rounded-sm p-4 flex flex-col items-center">
+            <div class="polaroid-frame w-[220px] sm:w-[250px] md:w-[275px] bg-white rounded-sm p-4 flex flex-col items-center relative">
+                <!-- Crown easter egg trigger - positioned on the white frame top-right -->
+                <div id="hero-crown-trigger" class="absolute -top-3 -right-3 z-40 cursor-pointer hover:scale-125 active:scale-90 transition-transform duration-200" title="Tap for secret!">
+                    <span class="text-3xl select-none drop-shadow-md" style="text-shadow: 0 0 10px rgba(255,215,0,0.7);">👑</span>
+                </div>
                 <div class="relative w-full aspect-square bg-romantic-pink-light rounded-sm overflow-hidden border border-romantic-pink/10 flex items-center justify-center group">
                     @if($centerHero && $centerHero->image_path && file_exists(public_path($centerHero->image_path)))
                         <img src="{{ asset($centerHero->image_path) }}" alt="Main Polaroid" class="w-full h-full object-cover">
@@ -113,10 +119,6 @@
                             <h4 class="mt-3 font-romantic text-xl text-pink-600">{{ $centerHero->caption ?? 'The Birthday Girl' }}</h4>
                         </div>
                     @endif
-                    <!-- Crown easter egg trigger - always visible overlay -->
-                    <div id="hero-crown-trigger" class="absolute top-2 right-2 z-40 cursor-pointer hover:scale-125 active:scale-90 transition-transform duration-200 title="Double tap for secret!" onclick="void(0)">
-                        <span class="text-2xl select-none drop-shadow-lg filter" style="text-shadow: 0 0 8px rgba(255,215,0,0.6);">👑</span>
-                    </div>
                 </div>
                 <p class="mt-4 font-romantic text-xl md:text-2xl text-pink-600/90 font-bold leading-none">{{ $config['partner_name'] }} 💖</p>
             </div>

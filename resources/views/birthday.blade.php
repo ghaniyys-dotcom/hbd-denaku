@@ -162,39 +162,4 @@
         </div>
     </div>
 
-    <!-- CURTAIN REVEAL OVERLAY (for intro transition) -->
-    <div id="curtain-overlay" class="fixed inset-0 z-[9999] pointer-events-none">
-        <!-- Left curtain panel -->
-        <div id="curtain-left" class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-pink-900 via-rose-800 to-pink-700 pointer-events-auto" style="transform: translateX(0);">
-            <div class="absolute inset-0 opacity-30" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);"></div>
-            <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-pink-500/20 to-transparent"></div>
-            <!-- Decorative curtain tie -->
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-12 h-24 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-lg flex items-center justify-center">
-                <div class="w-8 h-8 rounded-full border-2 border-amber-300/50 flex items-center justify-center">
-                    <span class="text-sm">🎀</span>
-                </div>
-            </div>
-        </div>
-        <!-- Right curtain panel -->
-        <div id="curtain-right" class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-pink-900 via-rose-800 to-pink-700 pointer-events-auto" style="transform: translateX(0);">
-            <div class="absolute inset-0 opacity-30" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);"></div>
-            <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-pink-500/20 to-transparent"></div>
-            <!-- Decorative curtain tie -->
-            <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-24 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-lg flex items-center justify-center">
-                <div class="w-8 h-8 rounded-full border-2 border-amber-300/50 flex items-center justify-center">
-                    <span class="text-sm">🎀</span>
-                </div>
-            </div>
-        </div>
-        <!-- Center sparkle burst (visible when curtain opens) -->
-        <div id="curtain-sparkles" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
-            <div class="relative">
-                <span class="absolute -top-20 -left-10 text-3xl animate-ping">✨</span>
-                <span class="absolute -top-16 right-[-60px] text-2xl animate-ping" style="animation-delay: 0.2s;">💫</span>
-                <span class="absolute bottom-[-40px] left-[-40px] text-3xl animate-ping" style="animation-delay: 0.4s;">💖</span>
-                <span class="absolute -top-8 -right-8 text-2xl animate-ping" style="animation-delay: 0.1s;">🌟</span>
-                <span class="absolute bottom-[-20px] right-[-20px] text-xl animate-ping" style="animation-delay: 0.3s;">💕</span>
-            </div>
-        </div>
-    </div>
 </x-layouts.app>
