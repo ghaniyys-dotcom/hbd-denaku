@@ -135,18 +135,7 @@
                 <p id="modal-caption" class="font-cute text-base md:text-lg text-pink-800 text-center leading-relaxed"></p>
             </div>
 
-            <!-- Love comment box -->
-            <div class="w-full px-6 pb-5">
-                <div class="w-full bg-pink-50/80 rounded-2xl p-4 border border-pink-100/50 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-400 to-rose-400 text-sm flex items-center justify-center text-white font-bold select-none shadow-sm flex-shrink-0">
-                        👦
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-sans text-xs font-bold text-pink-600">Your Favorite Boy 💕</p>
-                        <p id="modal-love-comment" class="font-cute text-[13px] text-pink-700/80 leading-relaxed mt-1"></p>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </section>

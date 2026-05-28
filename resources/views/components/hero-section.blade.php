@@ -109,12 +109,14 @@
                         <img src="{{ asset($centerHero->image_path) }}" alt="Main Polaroid" class="w-full h-full object-cover">
                     @else
                         <div class="absolute inset-0 bg-gradient-to-tr from-romantic-pink-dark/30 via-romantic-peach/20 to-romantic-lavender/30 flex flex-col items-center justify-center p-6 text-center">
-                            <div id="hero-crown-trigger" class="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md animate-pulse cursor-pointer hover:scale-110 active:scale-95 transition-transform z-40">
-                                <span class="text-3xl select-none">{{ $centerHero->emoji ?? '👑' }}</span>
-                            </div>
+                            <span class="text-5xl select-none">{{ $centerHero->emoji ?? '👑' }}</span>
                             <h4 class="mt-3 font-romantic text-xl text-pink-600">{{ $centerHero->caption ?? 'The Birthday Girl' }}</h4>
                         </div>
                     @endif
+                    <!-- Crown easter egg trigger - always visible overlay -->
+                    <div id="hero-crown-trigger" class="absolute top-2 right-2 z-40 cursor-pointer hover:scale-125 active:scale-90 transition-transform duration-200 title="Double tap for secret!" onclick="void(0)">
+                        <span class="text-2xl select-none drop-shadow-lg filter" style="text-shadow: 0 0 8px rgba(255,215,0,0.6);">👑</span>
+                    </div>
                 </div>
                 <p class="mt-4 font-romantic text-xl md:text-2xl text-pink-600/90 font-bold leading-none">{{ $config['partner_name'] }} 💖</p>
             </div>

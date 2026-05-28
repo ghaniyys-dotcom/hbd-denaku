@@ -37,6 +37,72 @@
         <!-- 3.5 Love Journey vertical scrapbook timeline -->
         <x-love-journey :config="$config" />
 
+        <!-- 3.6 Floating Sweet Messages (Romantic background ticker) -->
+        <div id="floating-messages" class="fixed bottom-0 left-0 w-full pointer-events-none z-[5] overflow-hidden" style="height: 200px;">
+        </div>
+
+        <!-- 3.7 Special Love Note Card (animated envelope) -->
+        <section id="love-note-section" class="relative py-20 px-6 overflow-hidden" style="background: linear-gradient(180deg, #FFF8F0 0%, #FFE8EC 50%, #FFF8F0 100%);">
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="absolute top-10 left-[10%] text-pink-200/20 text-6xl animate-float-slow select-none" style="animation-duration: 8s;">💌</div>
+                <div class="absolute top-20 right-[15%] text-rose-200/20 text-5xl animate-float-fast select-none" style="animation-duration: 6s;">💝</div>
+                <div class="absolute bottom-10 left-[30%] text-pink-200/15 text-4xl animate-float-slow select-none" style="animation-duration: 10s;">💕</div>
+            </div>
+            
+            <div class="relative z-10 max-w-2xl mx-auto text-center">
+                <span class="font-sans text-xs font-bold tracking-[0.25em] text-pink-500/80 uppercase">Special Message</span>
+                <h2 class="font-romantic text-4xl md:text-5xl text-pink-700 mt-3 filter drop-shadow-sm">
+                    Pesan Cinta Untukmu 💌
+                </h2>
+                
+                <!-- Envelope card -->
+                <div id="love-envelope" class="mt-12 relative cursor-pointer group mx-auto" style="max-width: 420px;">
+                    <!-- Envelope back -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-pink-100 to-rose-100 rounded-2xl transform rotate-1 shadow-lg"></div>
+                    
+                    <!-- Envelope body -->
+                    <div class="relative bg-gradient-to-br from-white to-pink-50/80 rounded-2xl border border-pink-100 p-8 shadow-xl transform group-hover:scale-[1.02] transition-all duration-500">
+                        <!-- Stamp -->
+                        <div class="absolute -top-4 -right-4 w-16 h-20 bg-gradient-to-br from-rose-400 to-pink-500 rounded-sm shadow-lg flex flex-col items-center justify-center transform rotate-6 group-hover:rotate-12 transition-transform duration-300 z-10">
+                            <span class="text-2xl">👑</span>
+                            <span class="font-sans text-[7px] font-bold text-white/90 tracking-wider mt-0.5">LOVE</span>
+                            <span class="font-sans text-[6px] text-white/70">FOREVER</span>
+                            <!-- Stamp perforations -->
+                            <div class="absolute inset-[3px] border border-dashed border-white/20 rounded-sm pointer-events-none"></div>
+                        </div>
+                        
+                        <!-- Envelope flap (triangle) -->
+                        <div class="absolute -top-6 left-0 right-0 h-8 overflow-hidden">
+                            <div class="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-pink-200/60 to-transparent transform -skew-y-1"></div>
+                        </div>
+                        
+                        <!-- Heart seal -->
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-rose-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg animate-pulse group-hover:animate-none group-hover:scale-110 transition-transform duration-300">
+                            <span class="text-2xl filter drop-shadow-sm">💝</span>
+                        </div>
+                        
+                        <p class="mt-6 font-cute text-pink-700/60 text-sm">
+                            Klik amplop ini untuk membuka pesan cintaku...
+                        </p>
+                        
+                        <!-- Hidden message (revealed on click) -->
+                        <div id="love-message-content" class="hidden mt-6">
+                            <div class="bg-gradient-to-br from-pink-50 to-rose-50/50 rounded-xl p-6 border border-pink-100 shadow-inner">
+                                <p class="font-romantic text-xl md:text-2xl text-pink-600 leading-relaxed">
+                                    Kamu adalah jawaban dari setiap doa yang pernah aku panjatkan. Setiap detik bersamamu adalah anugrah yang tidak akan pernah aku tukar dengan apa pun di dunia ini. Terima kasih sudah menjadi bagian dari hidupku. I love you more than words can say, my princess! 👑💕
+                                </p>
+                                <div class="mt-4 flex items-center justify-center gap-2">
+                                    <span class="text-pink-300">—</span>
+                                    <span class="font-romantic text-lg text-pink-500">Your Favorite Boy</span>
+                                    <span class="text-pink-300">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 4. Pinterest Scrapbook Polaroid Gallery -->
         <x-memory-gallery :config="$config" />
 
@@ -93,6 +159,42 @@
             <button id="btn-close-easter-egg" class="mt-8 px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-cute text-sm font-bold rounded-full shadow-lg transition-all active:scale-95 cursor-pointer pointer-events-auto">
                 Tutup Surat Rahasia 🎀
             </button>
+        </div>
+    </div>
+
+    <!-- CURTAIN REVEAL OVERLAY (for intro transition) -->
+    <div id="curtain-overlay" class="fixed inset-0 z-[9999] pointer-events-none">
+        <!-- Left curtain panel -->
+        <div id="curtain-left" class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-pink-900 via-rose-800 to-pink-700 pointer-events-auto" style="transform: translateX(0);">
+            <div class="absolute inset-0 opacity-30" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-pink-500/20 to-transparent"></div>
+            <!-- Decorative curtain tie -->
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-12 h-24 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-lg flex items-center justify-center">
+                <div class="w-8 h-8 rounded-full border-2 border-amber-300/50 flex items-center justify-center">
+                    <span class="text-sm">🎀</span>
+                </div>
+            </div>
+        </div>
+        <!-- Right curtain panel -->
+        <div id="curtain-right" class="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-pink-900 via-rose-800 to-pink-700 pointer-events-auto" style="transform: translateX(0);">
+            <div class="absolute inset-0 opacity-30" style="background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);"></div>
+            <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-pink-500/20 to-transparent"></div>
+            <!-- Decorative curtain tie -->
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-24 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-lg flex items-center justify-center">
+                <div class="w-8 h-8 rounded-full border-2 border-amber-300/50 flex items-center justify-center">
+                    <span class="text-sm">🎀</span>
+                </div>
+            </div>
+        </div>
+        <!-- Center sparkle burst (visible when curtain opens) -->
+        <div id="curtain-sparkles" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none">
+            <div class="relative">
+                <span class="absolute -top-20 -left-10 text-3xl animate-ping">✨</span>
+                <span class="absolute -top-16 right-[-60px] text-2xl animate-ping" style="animation-delay: 0.2s;">💫</span>
+                <span class="absolute bottom-[-40px] left-[-40px] text-3xl animate-ping" style="animation-delay: 0.4s;">💖</span>
+                <span class="absolute -top-8 -right-8 text-2xl animate-ping" style="animation-delay: 0.1s;">🌟</span>
+                <span class="absolute bottom-[-20px] right-[-20px] text-xl animate-ping" style="animation-delay: 0.3s;">💕</span>
+            </div>
         </div>
     </div>
 </x-layouts.app>

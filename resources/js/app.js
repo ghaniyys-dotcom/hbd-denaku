@@ -408,36 +408,161 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.to(loaderEl, {
             opacity: 0,
             scale: 1.05,
-            duration: 1.5,
+            duration: 0.8,
             ease: 'power3.inOut',
             onComplete: () => {
                 loaderEl.style.display = 'none';
                 loaderEl.remove();
 
                 contentEl.classList.remove('hidden');
-                gsap.fromTo(contentEl, 
-                    { opacity: 0 }, 
-                    { opacity: 1, duration: 1.2, ease: 'power2.out' }
-                );
+                contentEl.style.opacity = '1';
 
                 const player = document.getElementById('floating-music-player');
                 if (player) {
-                    gsap.to(player, {
-                        y: 0,
-                        opacity: 1,
-                        duration: 1,
-                        ease: 'back.out(1.5)',
-                        delay: 0.8
-                    });
+                    player.style.opacity = '1';
+                    player.style.transform = 'none';
                 }
 
                 runHeroTypewriter();
+
+                const curtainLeft = document.getElementById('curtain-left');
+                const curtainRight = document.getElementById('curtain-right');
+                const curtainSparkles = document.getElementById('curtain-sparkles');
+                const curtainOverlay = document.getElementById('curtain-overlay');
+
+                if (curtainLeft && curtainRight) {
+                    gsap.delayedCall(0.3, () => {
+                        if (curtainSparkles) {
+                            gsap.to(curtainSparkles, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+                        }
+
+                        gsap.to(curtainLeft, {
+                            x: '-100%',
+                            duration: 1.8,
+                            ease: 'elastic.out(1, 0.75)',
+                            onComplete: () => {
+                                if (curtainOverlay) curtainOverlay.style.display = 'none';
+                            }
+                        });
+                        gsap.to(curtainRight, {
+                            x: '100%',
+                            duration: 1.8,
+                            ease: 'elastic.out(1, 0.75)',
+                        });
+
+                        gsap.delayedCall(1.2, () => {
+                            if (curtainSparkles) {
+                                gsap.to(curtainSparkles, { opacity: 0, duration: 0.8, ease: 'power2.in' });
+                            }
+                        });
+
+                        gsap.delayedCall(0.5, () => {
+                            confetti({
+                                particleCount: 80,
+                                spread: 70,
+                                origin: { y: 0.5 },
+                                colors: ['#ff85a1', '#ffb7c5', '#ffd1dc', '#ff69b4', '#dda0dd']
+                            });
+                        });
+                    });
+                }
             }
         });
     };
 
-    if (openBtn) openBtn.addEventListener('click', triggerSurpriseTransition);
-    if (skipBtn) skipBtn.addEventListener('click', triggerSurpriseTransition);
+
+    // --------------------------------------------------------------------------
+    // 6.5 FLOATING SWEET MESSAGES (Random romantic words floating up)
+    // --------------------------------------------------------------------------
+    const sweetWords = [
+        "I love you 💕", "Kamu cantik banget 🌸", "My princess 👑",
+        "Selamanya sama kamu 💖", "Kamu hatiku ❤️", "Cantik luar dalam ✨",
+        "My everything 💗", "Mau nikah? 💍", "Sleep? No, kamu 🌙",
+        "Kamu bikin aku bahagia 😍", "Best girlfriend ever 🏆",
+        "Kamu nggak akan pernah sendirian 🤗", "Pillow deal? DEAL! 😂❤️",
+        "Aku mau kamu selamanya 💕", "Kamu obat dari segalanya 🩷",
+        "My favorite notification 📱❤️", "Kamu yang terbaik untukku 🌟"
+    ];
+
+    const floatingMessages = document.getElementById('floating-messages');
+    let sweetIndex = 0;
+
+    const spawnSweetMessage = () => {
+        if (!floatingMessages) return;
+
+        const el = document.createElement('div');
+        el.className = 'absolute font-romantic text-pink-400/30 select-none pointer-events-none whitespace-nowrap';
+        el.innerText = sweetWords[sweetIndex % sweetWords.length];
+        sweetIndex++;
+
+        // Random positioning
+        const size = Math.random() * 16 + 14;
+        const leftPos = Math.random() * 80 + 5;
+        el.style.fontSize = size + 'px';
+        el.style.left = leftPos + '%';
+        el.style.bottom = '-50px';
+
+        floatingMessages.appendChild(el);
+
+        // Animate upward with drift
+        const duration = Math.random() * 6 + 5;
+        gsap.to(el, {
+            bottom: '110%',
+            x: (Math.random() - 0.5) * 120,
+            rotation: (Math.random() - 0.5) * 20,
+            opacity: 0,
+            duration: duration,
+            ease: 'none',
+            onComplete: () => el.remove()
+        });
+
+        // Spawn next
+        setTimeout(spawnSweetMessage, Math.random() * 2500 + 1500);
+    };
+
+    // Start floating messages after curtain opens
+    setTimeout(() => {
+        if (floatingMessages) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(spawnSweetMessage, i * 800);
+            }
+        }
+    }, 3000);
+
+    // --------------------------------------------------------------------------
+    // 6.6 LOVE ENVELOPE CLICK ANIMATION
+    // --------------------------------------------------------------------------
+    const loveEnvelope = document.getElementById('love-envelope');
+    const loveMessageContent = document.getElementById('love-message-content');
+    let envelopeOpened = false;
+
+    if (loveEnvelope && loveMessageContent) {
+        loveEnvelope.addEventListener('click', () => {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
+
+            // Bounce animation
+            gsap.fromTo(loveEnvelope,
+                { scale: 1 },
+                { scale: 1.05, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.inOut' }
+            );
+
+            // Show message with GSAP reveal
+            loveMessageContent.classList.remove('hidden');
+            gsap.fromTo(loveMessageContent,
+                { opacity: 0, y: 30, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.5)' }
+            );
+
+            // Mini confetti burst
+            confetti({
+                particleCount: 25,
+                spread: 50,
+                origin: { y: 0.6 },
+                colors: ['#ff85a1', '#ffb7c5', '#fbbf24', '#dda0dd']
+            });
+        });
+    }
 
     // --------------------------------------------------------------------------
     // 7. HERO TYPEWRITER
