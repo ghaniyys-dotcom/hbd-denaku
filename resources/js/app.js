@@ -464,6 +464,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    if (openBtn) openBtn.addEventListener('click', triggerSurpriseTransition);
+    if (skipBtn) skipBtn.addEventListener('click', triggerSurpriseTransition);
+
 
     // --------------------------------------------------------------------------
     // 6.5 FLOATING SWEET MESSAGES (Random romantic words floating up)
