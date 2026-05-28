@@ -49,13 +49,33 @@ class AdminDashboardController extends Controller
             'gift_description' => 'required|string',
             'gift_coupon_code' => 'required|string|max:50',
             'easter_egg_letter' => 'required|string',
+            'hero_title_content' => 'nullable|string|max:200',
+            'hero_title_id' => 'nullable|integer',
+            'hero_subtitle_content' => 'nullable|string|max:200',
+            'hero_subtitle_id' => 'nullable|integer',
         ]);
 
         foreach ($data as $key => $value) {
-            Setting::setValue($key, $value);
+            if (!in_array($key, ['hero_title_content', 'hero_title_id', 'hero_subtitle_content', 'hero_subtitle_id'])) {
+                Setting::setValue($key, $value);
+            }
         }
 
-        return redirect()->route('admin.dashboard')->with('success', 'General settings berhasil diperbarui! 💖✨');
+        // Update hero title
+        if ($request->filled('hero_title_id') && $request->filled('hero_title_content')) {
+            HeroSection::where('id', $request->input('hero_title_id'))->update(['content' => $request->input('hero_title_content')]);
+        }
+        // Update hero subtitle
+        if ($request->filled('hero_subtitle_id') && $request->filled('hero_subtitle_content')) {
+            HeroSection::where('id', $request->input('hero_subtitle_id'))->update(['content' => $request->input('hero_subtitle_content')]);
+        }
+
+        // AJAX response
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Semua settings berhasil disimpan! 💖✨']);
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'Semua settings berhasil disimpan! 💖✨');
     }
 
     /*

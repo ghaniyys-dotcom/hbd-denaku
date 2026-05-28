@@ -134,56 +134,75 @@
                 <div id="tab-general" class="tab-content flex flex-col gap-6">
                     <div class="border-b border-white/10 pb-4 mb-4 select-none">
                         <h2 class="font-romantic text-3xl text-white">General settings ⚙️</h2>
-                        <p class="font-cute text-xs text-pink-300/40">Mengubah tanggal jadian, musik instrumental, nama pacar, serta surat-surat cinta utama.</p>
+                        <p class="font-cute text-xs text-pink-300/40">Semua konfigurasi umum website. Scroll ke bawah, lalu klik <strong>Save All</strong> untuk menyimpan sekaligus.</p>
                     </div>
 
-                    <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
+                    <form id="form-general-all" action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
                         @csrf
                         
+                        <!-- Section: Identitas -->
+                        <div class="border-b border-white/10 pb-4 mb-2 select-none">
+                            <h3 class="font-romantic text-xl text-white">💑 Identitas & Tanggal</h3>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Partner Name -->
                             <div>
                                 <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Nama Pacar Tersayang</label>
                                 <input type="text" name="partner_name" value="{{ $settings['partner_name'] ?? '' }}" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
                             </div>
-
-                            <!-- Birth Date -->
                             <div>
                                 <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Tanggal Lahir (Ultah)</label>
                                 <input type="date" name="birth_date" value="{{ $settings['birth_date'] ?? '' }}" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
                             </div>
-
-                            <!-- Anniversary Date Time -->
                             <div>
                                 <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Waktu Jadian (Countdown/up)</label>
                                 <input type="text" name="anniversary_date" value="{{ $settings['anniversary_date'] ?? '' }}" required placeholder="YYYY-MM-DDTHH:MM:SS" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
                                 <span class="text-[10px] text-pink-300/40 mt-1 block">Format: YYYY-MM-DDTHH:MM:SS (Contoh: 2023-10-17T01:58:00)</span>
                             </div>
-
-                            <!-- Background Music URL -->
                             <div>
-                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Musik MP3 Latar Belakang (URL/Path)</label>
+                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Musik MP3 URL/Path</label>
                                 <input type="text" name="music_url" value="{{ $settings['music_url'] ?? '' }}" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                <span class="text-[10px] text-pink-300/40 mt-1 block">Upload file via FTP ke public/audio/ lalu isi path-nya</span>
                             </div>
                         </div>
 
-                        <!-- Love Letter Text (Long) -->
+                        <!-- Section: Hero Text -->
+                        <div class="border-b border-white/10 pb-4 mb-2 select-none mt-6">
+                            <h3 class="font-romantic text-xl text-white">🦸 Hero Section Teks</h3>
+                        </div>
+                        @php
+                            $heroTitle = $heroSections->firstWhere('section_key', 'hero_title');
+                            $heroSubtitle = $heroSections->firstWhere('section_key', 'hero_subtitle');
+                        @endphp
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Judul Hero (H1)</label>
+                                <input type="text" name="hero_title_content" value="{{ $heroTitle->content ?? 'Happy Birthday, My Princess!' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                <input type="hidden" name="hero_title_id" value="{{ $heroTitle->id ?? '' }}">
+                            </div>
+                            <div>
+                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Subtitle Hero</label>
+                                <input type="text" name="hero_subtitle_content" value="{{ $heroSubtitle->content ?? 'My Dearest Love' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                <input type="hidden" name="hero_subtitle_id" value="{{ $heroSubtitle->id ?? '' }}">
+                            </div>
+                        </div>
+
+                        <!-- Section: Surat Cinta -->
+                        <div class="border-b border-white/10 pb-4 mb-2 select-none mt-6">
+                            <h3 class="font-romantic text-xl text-white">💌 Surat Cinta</h3>
+                        </div>
                         <div>
                             <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Isi Surat Cinta Utama (Love Letter Scroll)</label>
-                            <textarea name="letter_text" rows="8" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute admin-scroll">{{ $settings['letter_text'] ?? '' }}</textarea>
+                            <textarea name="letter_text" rows="6" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute admin-scroll">{{ $settings['letter_text'] ?? '' }}</textarea>
                         </div>
-
-                        <!-- Easter Egg Scroll Letter -->
                         <div>
-                            <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Isi Surat Rahasia Tersembunyi (Crown Easter Egg 👑)</label>
-                            <textarea name="easter_egg_letter" rows="5" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute admin-scroll">{{ $settings['easter_egg_letter'] ?? '' }}</textarea>
+                            <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Isi Surat Rahasia (Crown Easter Egg 👑)</label>
+                            <textarea name="easter_egg_letter" rows="4" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute admin-scroll">{{ $settings['easter_egg_letter'] ?? '' }}</textarea>
                         </div>
 
-                        <!-- Gift Voucher Config -->
-                        <div class="border-t border-white/10 pt-6 mt-6 select-none">
-                            <h3 class="font-romantic text-2xl text-white mb-4">Konfigurasi Gift Voucher 🎁</h3>
+                        <!-- Section: Gift Voucher -->
+                        <div class="border-b border-white/10 pb-4 mb-2 select-none mt-6">
+                            <h3 class="font-romantic text-xl text-white">🎁 Gift Voucher</h3>
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Judul Voucher</label>
@@ -198,17 +217,17 @@
                                 <input type="text" name="gift_coupon_code" value="{{ $settings['gift_coupon_code'] ?? '' }}" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
                             </div>
                         </div>
-
                         <div>
                             <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Deskripsi Lengkap Voucher</label>
                             <textarea name="gift_description" rows="3" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute admin-scroll">{{ $settings['gift_description'] ?? '' }}</textarea>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="pt-4 flex justify-end">
-                            <button type="submit" class="px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-cute text-sm font-bold rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer">
-                                Simpan General Settings 💾
+                        <!-- Save All Button -->
+                        <div class="pt-6 flex flex-col gap-3">
+                            <button type="submit" id="btn-save-all" class="w-full py-4 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-500 hover:from-pink-600 hover:via-rose-600 hover:to-pink-600 text-white font-cute text-base font-bold rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2">
+                                <span>💾</span> Save All General Settings
                             </button>
+                            <p id="save-status" class="text-center text-xs font-cute text-pink-300/50 h-4"></p>
                         </div>
                     </form>
                 </div>
@@ -645,42 +664,7 @@
                 <div id="tab-hero" class="tab-content hidden flex flex-col gap-6">
                     <div class="border-b border-white/10 pb-4 mb-4 select-none">
                         <h2 class="font-romantic text-3xl text-white">Hero Section 🦸</h2>
-                        <p class="font-cute text-xs text-pink-300/40">Kelola gambar polaroid, judul, subtitle, dan teks utama di halaman atas website.</p>
-                    </div>
-
-                    <!-- Quick Edit: Hero Title & Subtitle -->
-                    <div class="admin-glass rounded-3xl p-6 border border-white/5">
-                        <h3 class="font-romantic text-xl text-white mb-4">📝 Teks Hero (Title & Subtitle)</h3>
-                        @php
-                            $heroTitle = $heroSections->firstWhere('section_key', 'hero_title');
-                            $heroSubtitle = $heroSections->firstWhere('section_key', 'hero_subtitle');
-                        @endphp
-                        <div class="space-y-4">
-                            <!-- Title -->
-                            <form action="{{ route('admin.hero.update', $heroTitle->id ?? 0) }}" method="POST" class="space-y-3">
-                                @csrf
-                                <input type="hidden" name="section_key" value="hero_title">
-                                <div>
-                                    <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-2">Judul Utama (Hero Title)</label>
-                                    <input type="text" name="content" value="{{ $heroTitle->content ?? 'Happy Birthday, My Princess!' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="px-5 py-2.5 bg-pink-500 text-white rounded-xl font-cute text-xs hover:bg-pink-600 transition-all cursor-pointer">Simpan Judul 💾</button>
-                                </div>
-                            </form>
-                            <!-- Subtitle -->
-                            <form action="{{ route('admin.hero.update', $heroSubtitle->id ?? 0) }}" method="POST" class="space-y-3">
-                                @csrf
-                                <input type="hidden" name="section_key" value="hero_subtitle">
-                                <div>
-                                    <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-2">Subtitle Hero</label>
-                                    <input type="text" name="content" value="{{ $heroSubtitle->content ?? 'My Dearest Love' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="px-5 py-2.5 bg-pink-500 text-white rounded-xl font-cute text-xs hover:bg-pink-600 transition-all cursor-pointer">Simpan Subtitle 💾</button>
-                                </div>
-                            </form>
-                        </div>
+                        <p class="font-cute text-xs text-pink-300/40">Kelola gambar polaroid hero di halaman atas. Judul & subtitle ada di tab <strong>General Config</strong> (Save All).</p>
                     </div>
 
                     <!-- Hero Polaroid Images -->
@@ -819,6 +803,55 @@
         document.addEventListener('DOMContentLoaded', () => {
             const activeTab = localStorage.getItem('admin_active_tab') || 'tab-general';
             switchTab(activeTab);
+
+            // AJAX Save All — no page reload
+            const form = document.getElementById('form-general-all');
+            const saveBtn = document.getElementById('btn-save-all');
+            const saveStatus = document.getElementById('save-status');
+
+            if (form && saveBtn) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const originalBtnText = saveBtn.innerHTML;
+                    saveBtn.innerHTML = '<span>⏳</span> Menyimpan...';
+                    saveBtn.disabled = true;
+                    saveBtn.classList.add('opacity-75', 'cursor-not-allowed');
+                    saveStatus.textContent = '';
+
+                    try {
+                        const formData = new FormData(form);
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                        });
+
+                        if (response.ok || response.redirected) {
+                            saveBtn.innerHTML = '<span>✅</span> Tersimpan!';
+                            saveStatus.textContent = 'Semua settings berhasil disimpan! 💖✨';
+                            saveStatus.className = 'text-center text-xs font-cute text-green-300 h-4';
+                        } else {
+                            saveBtn.innerHTML = '<span>❌</span> Error';
+                            saveStatus.textContent = 'Gagal menyimpan. Coba lagi.';
+                            saveStatus.className = 'text-center text-xs font-cute text-red-300 h-4';
+                        }
+                    } catch (err) {
+                        saveBtn.innerHTML = '<span>❌</span> Error';
+                        saveStatus.textContent = 'Gagal menyimpan. Cek koneksi.';
+                        saveStatus.className = 'text-center text-xs font-cute text-red-300 h-4';
+                    }
+
+                    setTimeout(() => {
+                        saveBtn.innerHTML = originalBtnText;
+                        saveBtn.disabled = false;
+                        saveBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                        setTimeout(() => { saveStatus.textContent = ''; }, 3000);
+                    }, 2000);
+                });
+            }
         });
     </script>
 </body>
