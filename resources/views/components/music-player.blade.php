@@ -20,7 +20,7 @@
         <!-- Track info text -->
         <div class="pr-3 flex flex-col justify-center">
             <span class="font-sans text-[9px] font-extrabold uppercase text-pink-500 tracking-wider">Now Playing</span>
-            <span class="font-cute text-xs font-bold text-pink-950/80 max-w-[130px] truncate">Beautiful Dream 🌸</span>
+            <span class="font-cute text-xs font-bold text-pink-950/80 max-w-[130px] truncate">Wedding Piano 🎹</span>
             
             <!-- Wave animations visualizer -->
             <div id="audio-visualizer" class="flex gap-0.5 mt-1 items-end h-3">

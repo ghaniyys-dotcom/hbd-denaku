@@ -1,6 +1,6 @@
 @props(['config'])
 
-<section id="gallery-section" class="relative py-24 px-6 bg-romantic-pink-light overflow-hidden">
+<section id="gallery-section" class="relative py-24 px-6 overflow-hidden" style="background: linear-gradient(180deg, #FFF8F0 0%, #FFE8EC 25%, #FFF0F5 50%, #FDEEF4 75%, #FFF8F0 100%);">
     <!-- Curved divider top -->
     <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180 z-10 pointer-events-none">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[50px] fill-romantic-cream-light">
@@ -8,16 +8,40 @@
         </svg>
     </div>
 
-    <!-- Floating details -->
-    <div class="absolute top-[30%] right-[10%] text-3xl pointer-events-none opacity-20 animate-bounce">🎈</div>
-    <div class="absolute bottom-[20%] left-[8%] text-3xl pointer-events-none opacity-20 animate-bounce" style="animation-delay: 1s;">✨</div>
+    <!-- Romantic background decorations -->
+    <!-- Soft glowing orbs -->
+    <div class="absolute top-20 left-10 w-[300px] h-[300px] bg-pink-300/20 rounded-full blur-[100px] pointer-events-none animate-pulse" style="animation-duration: 4s;"></div>
+    <div class="absolute top-1/3 right-5 w-[250px] h-[250px] bg-rose-200/25 rounded-full blur-[80px] pointer-events-none animate-pulse" style="animation-duration: 6s; animation-delay: 1s;"></div>
+    <div class="absolute bottom-20 left-1/4 w-[200px] h-[200px] bg-pink-200/20 rounded-full blur-[90px] pointer-events-none animate-pulse" style="animation-duration: 5s; animation-delay: 2s;"></div>
+    <div class="absolute bottom-1/3 right-1/4 w-[280px] h-[280px] bg-fuchsia-200/15 rounded-full blur-[70px] pointer-events-none animate-pulse" style="animation-duration: 7s; animation-delay: 0.5s;"></div>
+
+    <!-- Floating sparkle decorations -->
+    <div class="absolute top-[15%] left-[8%] text-3xl pointer-events-none animate-float-slow select-none" style="animation-duration: 6s;">💫</div>
+    <div class="absolute top-[25%] right-[12%] text-2xl pointer-events-none animate-float-fast select-none" style="animation-duration: 4s; animation-delay: 1.5s;">🌸</div>
+    <div class="absolute top-[60%] left-[5%] text-3xl pointer-events-none animate-float-fast select-none" style="animation-duration: 5s; animation-delay: 0.8s;">✨</div>
+    <div class="absolute top-[45%] right-[6%] text-2xl pointer-events-none animate-float-slow select-none" style="animation-duration: 7s; animation-delay: 2s;">💕</div>
+    <div class="absolute bottom-[25%] left-[15%] text-2xl pointer-events-none animate-float-slow select-none" style="animation-duration: 5.5s; animation-delay: 1s;">🌷</div>
+    <div class="absolute bottom-[35%] right-[10%] text-3xl pointer-events-none animate-float-fast select-none" style="animation-duration: 6.5s; animation-delay: 0.3s;">💖</div>
+    <div class="absolute top-[80%] left-[50%] text-xl pointer-events-none animate-float-slow select-none" style="animation-duration: 8s; animation-delay: 1.8s;">🩷</div>
+    <div class="absolute top-[10%] left-[40%] text-xl pointer-events-none animate-float-fast select-none opacity-40" style="animation-duration: 6s; animation-delay: 0.5s;">⭐</div>
+    <div class="absolute bottom-[15%] right-[35%] text-lg pointer-events-none animate-float-slow select-none opacity-50" style="animation-duration: 9s; animation-delay: 3s;">🎀</div>
+
+    <!-- Subtle heart pattern overlay -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none select-none" style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 18c-3-6-12-8-15-1s0 11 3 14l12 15 12-15c3-3 6-10 3-14s-12-1-15 1z' fill='%23ec4899'/%3E%3C/svg%3E&quot;); background-size: 60px 60px;"></div>
+
+    <!-- Diagonal light streaks -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden opacity-30">
+        <div class="absolute top-[-10%] left-[20%] w-[1px] h-[120%] bg-gradient-to-b from-transparent via-pink-300/40 to-transparent rotate-[15deg]"></div>
+        <div class="absolute top-[-10%] left-[60%] w-[1px] h-[120%] bg-gradient-to-b from-transparent via-rose-200/30 to-transparent rotate-[-10deg]"></div>
+        <div class="absolute top-[-10%] left-[80%] w-[1px] h-[120%] bg-gradient-to-b from-transparent via-pink-200/25 to-transparent rotate-[20deg]"></div>
+    </div>
 
     <div class="relative z-10 text-center mb-16 max-w-lg mx-auto select-none">
         <span class="font-sans text-xs font-bold tracking-[0.25em] text-pink-500/80 uppercase">Scrapbook Story</span>
-        <h2 class="font-romantic text-4xl md:text-5xl text-pink-600 mt-2 filter drop-shadow-sm">
+        <h2 class="font-romantic text-4xl md:text-5xl text-pink-700 mt-2 filter drop-shadow-sm">
             Our Sweet Memories 📸
         </h2>
-        <p class="mt-3 font-cute text-sm text-pink-700/50">
+        <p class="mt-3 font-cute text-sm text-pink-700/60">
             A beautiful snapshot of our journeys together. Hover to tilt them, click to view fullscreen comments!
         </p>
     </div>
