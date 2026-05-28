@@ -121,6 +121,9 @@
                 <button onclick="switchTab('tab-quizzes')" id="btn-tab-quizzes" class="admin-tab-btn w-full admin-glass text-left p-5 rounded-2xl text-pink-100 hover:bg-white/5 transition-all font-cute text-sm flex items-center gap-4 select-none">
                     <span>🧩</span> Couple Quiz Game
                 </button>
+                <button onclick="switchTab('tab-hero')" id="btn-tab-hero" class="admin-tab-btn w-full admin-glass text-left p-5 rounded-2xl text-pink-100 hover:bg-white/5 transition-all font-cute text-sm flex items-center gap-4 select-none">
+                    <span>🦸</span> Hero Section
+                </button>
             </aside>
 
             <!-- Dashboard Modules container -->
@@ -332,7 +335,7 @@
                                 <div class="flex gap-5 items-start">
                                     <!-- Miniature image display -->
                                     <div class="w-24 h-24 bg-white rounded-xl p-2 shadow-md overflow-hidden flex-shrink-0 flex items-center justify-center relative">
-                                        @if (str_starts_with($memory->image_path, 'uploads/') && File::exists(public_path($memory->image_path)))
+                                        @if ($memory->image_path && File::exists(public_path($memory->image_path)))
                                             <img src="{{ asset($memory->image_path) }}" class="w-full h-full object-cover rounded-md">
                                         @else
                                             <div class="w-full h-full bg-gradient-to-tr from-pink-200 to-romantic-gold rounded-md flex items-center justify-center text-2xl font-bold">🖼️</div>
@@ -629,6 +632,151 @@
                                 <div class="flex justify-end pt-2">
                                     <button type="submit" class="px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-cute text-sm font-bold rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer">
                                         Tambah Pertanyaan Kuis 🚀
+                                    </button>
+                                </div>
+                            </form>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- ==========================================================================
+                     F. TAB: HERO SECTION
+                     ========================================================================== -->
+                <div id="tab-hero" class="tab-content hidden flex flex-col gap-6">
+                    <div class="border-b border-white/10 pb-4 mb-4 select-none">
+                        <h2 class="font-romantic text-3xl text-white">Hero Section 🦸</h2>
+                        <p class="font-cute text-xs text-pink-300/40">Kelola gambar polaroid, judul, subtitle, dan teks utama di halaman atas website.</p>
+                    </div>
+
+                    <!-- Quick Edit: Hero Title & Subtitle -->
+                    <div class="admin-glass rounded-3xl p-6 border border-white/5">
+                        <h3 class="font-romantic text-xl text-white mb-4">📝 Teks Hero (Title & Subtitle)</h3>
+                        @php
+                            $heroTitle = $heroSections->firstWhere('section_key', 'hero_title');
+                            $heroSubtitle = $heroSections->firstWhere('section_key', 'hero_subtitle');
+                        @endphp
+                        <div class="space-y-4">
+                            <!-- Title -->
+                            <form action="{{ route('admin.hero.update', $heroTitle->id ?? 0) }}" method="POST" class="space-y-3">
+                                @csrf
+                                <input type="hidden" name="section_key" value="hero_title">
+                                <div>
+                                    <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-2">Judul Utama (Hero Title)</label>
+                                    <input type="text" name="content" value="{{ $heroTitle->content ?? 'Happy Birthday, My Princess!' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-5 py-2.5 bg-pink-500 text-white rounded-xl font-cute text-xs hover:bg-pink-600 transition-all cursor-pointer">Simpan Judul 💾</button>
+                                </div>
+                            </form>
+                            <!-- Subtitle -->
+                            <form action="{{ route('admin.hero.update', $heroSubtitle->id ?? 0) }}" method="POST" class="space-y-3">
+                                @csrf
+                                <input type="hidden" name="section_key" value="hero_subtitle">
+                                <div>
+                                    <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-2">Subtitle Hero</label>
+                                    <input type="text" name="content" value="{{ $heroSubtitle->content ?? 'My Dearest Love' }}" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-5 py-2.5 bg-pink-500 text-white rounded-xl font-cute text-xs hover:bg-pink-600 transition-all cursor-pointer">Simpan Subtitle 💾</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Hero Polaroid Images -->
+                    <div class="space-y-6">
+                        @foreach ($heroSections->where('section_key', '!=', 'hero_title')->where('section_key', '!=', 'hero_subtitle') as $hero)
+                            <div class="admin-glass rounded-3xl p-6 border border-white/5 flex flex-col gap-6">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-3xl">{{ $hero->emoji ?? '📸' }}</span>
+                                        <div>
+                                            <h4 class="font-cute text-base font-bold text-white">{{ $hero->title ?? ucfirst(str_replace(['hero_', '_'], ['', ' '], $hero->section_key)) }}</h4>
+                                            <p class="font-cute text-xs text-pink-300/50 mt-1">Key: <code class="bg-white/5 px-2 py-0.5 rounded text-pink-200">{{ $hero->section_key }}</code></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <button onclick="toggleElement('edit-hero-{{ $hero->id }}')" class="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white font-cute text-xs hover:bg-white/10 transition-all cursor-pointer">Edit</button>
+                                        <form action="{{ route('admin.hero.destroy', $hero->id) }}" method="POST" onsubmit="return confirm('Yakin mau menghapus hero section ini? 🥺')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-300 rounded-xl font-cute text-xs hover:bg-red-500/25 transition-all cursor-pointer">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                @if($hero->image_path)
+                                <div class="flex items-center gap-4">
+                                    <img src="{{ asset($hero->image_path) }}" class="w-20 h-20 object-cover rounded-xl border border-white/10">
+                                    <p class="font-cute text-xs text-pink-300/50">Gambar saat ini</p>
+                                </div>
+                                @endif
+
+                                <!-- Collapsable edit form -->
+                                <div id="edit-hero-{{ $hero->id }}" class="hidden border-t border-white/10 pt-6 mt-2">
+                                    <form action="{{ route('admin.hero.update', $hero->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5 text-left">
+                                        @csrf
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Caption / Teks</label>
+                                                <input type="text" name="caption" value="{{ $hero->caption }}" placeholder="Contoh: Hugs For You 🫂" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                            </div>
+                                            <div>
+                                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Emoji (Fallback)</label>
+                                                <input type="text" name="emoji" value="{{ $hero->emoji }}" placeholder="Contoh: 🧸" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Ganti Foto (Opsional)</label>
+                                            <input type="file" name="photo" class="w-full text-xs text-pink-200 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-500 file:text-white hover:file:bg-pink-600 file:cursor-pointer">
+                                        </div>
+                                        <div class="flex justify-end gap-3 pt-2">
+                                            <button type="button" onclick="toggleElement('edit-hero-{{ $hero->id }}')" class="px-5 py-2.5 border border-white/10 rounded-xl text-white font-cute text-xs hover:bg-white/5 transition-all cursor-pointer">Batal</button>
+                                            <button type="submit" class="px-5 py-2.5 bg-pink-500 text-white rounded-xl font-cute text-xs hover:bg-pink-600 transition-all cursor-pointer">Simpan 💾</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Add New Hero Section -->
+                    <div class="border-t border-white/10 pt-8 mt-6">
+                        <details class="group bg-white/5 border border-white/10 rounded-[32px] p-8 pointer-events-auto">
+                            <summary class="font-cute text-base font-bold text-white cursor-pointer select-none flex justify-between items-center">
+                                <span>➕ Tambah Hero Section Baru</span>
+                                <span class="transition-transform group-open:rotate-180">▼</span>
+                            </summary>
+                            <form action="{{ route('admin.hero.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 mt-8 text-left">
+                                @csrf
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Section Key (Unik)</label>
+                                        <input type="text" name="section_key" required placeholder="Contoh: hero_custom_1" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                        <span class="text-[10px] text-pink-300/40 mt-1 block">Gunakan format: hero_nama_custom</span>
+                                    </div>
+                                    <div>
+                                        <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Judul / Label</label>
+                                        <input type="text" name="title" placeholder="Contoh: Custom Polaroid" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Caption / Teks</label>
+                                        <input type="text" name="caption" placeholder="Contoh: Momen spesial kita" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                    </div>
+                                    <div>
+                                        <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Emoji (Fallback)</label>
+                                        <input type="text" name="emoji" placeholder="Contoh: 💖" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-widest mb-3">Foto</label>
+                                    <input type="file" name="photo" class="w-full text-xs text-pink-200 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-500 file:text-white hover:file:bg-pink-600 file:cursor-pointer">
+                                </div>
+                                <div class="flex justify-end pt-2">
+                                    <button type="submit" class="px-8 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-cute text-sm font-bold rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer">
+                                        Tambah Hero Section 🚀
                                     </button>
                                 </div>
                             </form>

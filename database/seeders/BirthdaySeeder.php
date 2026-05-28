@@ -8,6 +8,7 @@ use App\Models\Reason;
 use App\Models\Memory;
 use App\Models\Milestone;
 use App\Models\Quiz;
+use App\Models\HeroSection;
 
 class BirthdaySeeder extends Seeder
 {
@@ -89,6 +90,20 @@ class BirthdaySeeder extends Seeder
                     'sort_order' => $index,
                 ]);
             }
+        }
+
+        // 6. Seed Hero Sections
+        $heroDefaults = [
+            ['section_key' => 'hero_title', 'title' => 'Hero Title', 'content' => 'Happy Birthday, My Princess!', 'sort_order' => 0],
+            ['section_key' => 'hero_subtitle', 'title' => 'Hero Subtitle', 'content' => 'My Dearest Love', 'sort_order' => 1],
+            ['section_key' => 'hero_center', 'title' => 'Center Polaroid', 'caption' => 'The Birthday Girl', 'emoji' => '👑', 'sort_order' => 2],
+            ['section_key' => 'hero_left', 'title' => 'Left Polaroid', 'caption' => 'Hugs For You 🫂', 'emoji' => '🧸', 'sort_order' => 3],
+            ['section_key' => 'hero_mid_left', 'title' => 'Mid-Left Polaroid', 'caption' => 'Ketawa candu 🤪', 'emoji' => '✨', 'sort_order' => 4],
+            ['section_key' => 'hero_mid_right', 'title' => 'Mid-Right Polaroid', 'caption' => 'Kulineran seru 🍿', 'emoji' => '🍕', 'sort_order' => 5],
+            ['section_key' => 'hero_right', 'title' => 'Right Polaroid', 'caption' => 'Senja terindah 🌸', 'emoji' => '🌅', 'sort_order' => 6],
+        ];
+        foreach ($heroDefaults as $hero) {
+            HeroSection::updateOrCreate(['section_key' => $hero['section_key']], $hero);
         }
     }
 }

@@ -24,21 +24,27 @@
 
     <!-- Scrapbook Polaroid Grid -->
     <div class="relative z-10 max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 px-4">
-        @foreach($config['gallery'] as $index => $item)
+        @forelse($config['gallery'] as $index => $item)
             <div class="polaroid-item flex justify-center pointer-events-auto" style="--rotation: {{ $item['rotation'] }}">
                 <!-- Polaroid Frame -->
                 <div class="polaroid-frame w-[280px] bg-white rounded-sm shadow-lg p-3.5 transform hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer border border-pink-100 flex flex-col items-center hover:shadow-[0_15px_35px_rgba(255,183,197,0.4)]"
                      style="transform: rotate({{ $item['rotation'] }});"
-                     data-image-path="{{ asset($item['image']) }}"
+                     data-image-path="{{ $item['image'] ? asset($item['image']) : '' }}"
                      data-caption="{{ $item['caption'] }}"
                      data-index="{{ $index }}">
-                     
+                    
                     <!-- Photo Container -->
                     <div class="relative w-full aspect-[4/5] bg-romantic-pink-light/40 rounded-sm overflow-hidden border border-pink-50 flex items-center justify-center">
-                        <img src="{{ asset($item['image']) }}" alt="Memory #{{ $index + 1 }}" class="w-full h-full object-cover hidden" loading="lazy" decoding="async" onerror="this.classList.add('hidden'); document.getElementById('gallery-fallback-{{ $index }}').classList.remove('hidden')">
+                        @php
+                            $imgExists = !empty($item['image']) && file_exists(public_path($item['image']));
+                        @endphp
+
+                        @if($imgExists)
+                            <img src="{{ asset($item['image']) }}" alt="Memory #{{ $index + 1 }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                        @endif
                         
-                        <!-- Beautiful graphic placeholder if image is missing -->
-                        <div id="gallery-fallback-{{ $index }}" class="absolute inset-0 bg-gradient-to-tr from-romantic-pink/40 to-romantic-gold/25 flex flex-col items-center justify-center p-6 text-center select-none">
+                        <!-- Beautiful graphic placeholder (shown when image missing) -->
+                        <div class="polaroid-fallback absolute inset-0 bg-gradient-to-tr from-romantic-pink/40 to-romantic-gold/25 flex flex-col items-center justify-center p-6 text-center select-none {{ $imgExists ? 'hidden' : '' }}">
                             <span class="text-3xl animate-bounce">
                                 @switch($index % 6)
                                     @case(0) 🧸 @break
@@ -67,7 +73,13 @@
                     </p>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-span-full text-center py-16">
+                <span class="text-6xl">📸</span>
+                <p class="font-cute text-lg text-pink-400 mt-4">Belum ada memori foto. Tambahkan dari admin panel!</p>
+                <p class="font-cute text-sm text-pink-300/50 mt-2">Gambar yang diunggah akan muncul di sini secara otomatis.</p>
+            </div>
+        @endforelse
     </div>
 
     <!-- Fullscreen Polaroid Modal / Lightbox -->

@@ -8,6 +8,7 @@ use App\Models\Reason;
 use App\Models\Memory;
 use App\Models\Milestone;
 use App\Models\Quiz;
+use App\Models\HeroSection;
 use Illuminate\Support\Facades\File;
 
 class AdminDashboardController extends Controller
@@ -26,7 +27,10 @@ class AdminDashboardController extends Controller
         $milestones = Milestone::orderBy('sort_order')->get();
         $quizzes = Quiz::orderBy('sort_order')->get();
 
-        return view('admin.dashboard', compact('settings', 'reasons', 'memories', 'milestones', 'quizzes'));
+        // 3. Fetch Hero Sections
+        $heroSections = HeroSection::orderBy('sort_order')->get();
+
+        return view('admin.dashboard', compact('settings', 'reasons', 'memories', 'milestones', 'quizzes', 'heroSections'));
     }
 
     /**
@@ -271,5 +275,80 @@ class AdminDashboardController extends Controller
     {
         $quiz->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Pertanyaan kuis berhasil dihapus! 🗑️');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HERO SECTION CRUD
+    |--------------------------------------------------------------------------
+    */
+    public function storeHero(Request $request)
+    {
+        $data = $request->validate([
+            'section_key' => 'required|string|max:100',
+            'title' => 'nullable|string|max:200',
+            'content' => 'nullable|string',
+            'caption' => 'nullable|string|max:200',
+            'emoji' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = 'hero_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $data['image_path'] = 'uploads/' . $filename;
+        }
+
+        $exists = HeroSection::where('section_key', $data['section_key'])->first();
+        if ($exists) {
+            $exists->update($data);
+            return redirect()->route('admin.dashboard')->with('success', 'Hero section "' . $data['section_key'] . '" berhasil diperbarui! 🦸✨');
+        }
+
+        $data['sort_order'] = HeroSection::max('sort_order') + 1;
+        HeroSection::create($data);
+        return redirect()->route('admin.dashboard')->with('success', 'Hero section baru berhasil ditambahkan! 🦸✨');
+    }
+
+    public function updateHero(Request $request, HeroSection $hero)
+    {
+        $data = $request->validate([
+            'title' => 'nullable|string|max:200',
+            'content' => 'nullable|string',
+            'caption' => 'nullable|string|max:200',
+            'emoji' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            if ($hero->image_path && File::exists(public_path($hero->image_path))) {
+                File::delete(public_path($hero->image_path));
+            }
+            $file = $request->file('photo');
+            $filename = 'hero_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $data['image_path'] = 'uploads/' . $filename;
+        }
+
+        $hero->update($data);
+        return redirect()->route('admin.dashboard')->with('success', 'Hero section "' . $hero->section_key . '" berhasil diperbarui! 🦸✨');
+    }
+
+    public function destroyHero(HeroSection $hero)
+    {
+        if ($hero->image_path && File::exists(public_path($hero->image_path))) {
+            File::delete(public_path($hero->image_path));
+        }
+        $hero->delete();
+        return redirect()->route('admin.dashboard')->with('success', 'Hero section berhasil dihapus! 🗑️');
     }
 }

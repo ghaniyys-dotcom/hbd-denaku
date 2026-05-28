@@ -8,6 +8,7 @@ use App\Models\Reason;
 use App\Models\Memory;
 use App\Models\Milestone;
 use App\Models\Quiz;
+use App\Models\HeroSection;
 
 class BirthdayController extends Controller
 {
@@ -65,6 +66,11 @@ class BirthdayController extends Controller
                 ];
             })->toArray();
 
+            // Fetch hero sections
+            $dbHero = HeroSection::orderBy('sort_order')->get()->mapWithKeys(function ($item) {
+                return [$item->section_key => $item];
+            })->all();
+
             $config = [
                 'partner_name' => $dbSettings['partner_name'] ?? 'Denaku',
                 'anniversary_date' => $dbSettings['anniversary_date'] ?? '2023-10-17T01:58:00',
@@ -75,6 +81,7 @@ class BirthdayController extends Controller
                 'gallery' => $dbGallery,
                 'timeline' => $dbTimeline,
                 'quiz' => $dbQuiz,
+                'hero' => $dbHero,
                 'gift' => [
                     'title' => $dbSettings['gift_title'] ?? 'INFINITE HUGS & LOVE VOUCHER 🧸',
                     'subtitle' => $dbSettings['gift_subtitle'] ?? 'Redeemable anytime, valid forever, with unlimited claims!',

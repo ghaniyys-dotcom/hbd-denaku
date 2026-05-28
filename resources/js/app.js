@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openLightbox = (imagePath, caption, index) => {
         if (!modal) return;
         
-        if (imagePath.includes('photo.jpg') || imagePath.includes('gallery-')) {
+        if (imagePath && imagePath.length > 0) {
             modalImg.src = imagePath;
             modalImg.classList.remove('hidden');
             modalFallback.classList.add('hidden');

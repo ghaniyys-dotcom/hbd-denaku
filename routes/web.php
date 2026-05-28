@@ -36,4 +36,9 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::post('/quizzes', [AdminDashboardController::class, 'storeQuiz'])->name('admin.quizzes.store');
     Route::put('/quizzes/{quiz}', [AdminDashboardController::class, 'updateQuiz'])->name('admin.quizzes.update');
     Route::delete('/quizzes/{quiz}', [AdminDashboardController::class, 'destroyQuiz'])->name('admin.quizzes.destroy');
+
+    // Hero Section CRUD
+    Route::post('/hero', [AdminDashboardController::class, 'storeHero'])->name('admin.hero.store');
+    Route::post('/hero/{hero}', [AdminDashboardController::class, 'updateHero'])->name('admin.hero.update');
+    Route::delete('/hero/{hero}', [AdminDashboardController::class, 'destroyHero'])->name('admin.hero.destroy');
 });
