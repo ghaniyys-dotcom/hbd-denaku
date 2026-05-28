@@ -710,15 +710,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalFallback = document.getElementById('modal-fallback');
     const modalFallbackEmoji = document.getElementById('modal-fallback-emoji');
     const modalCaption = document.getElementById('modal-caption');
+    const modalLoveComment = document.getElementById('modal-love-comment');
     const closeGalleryBtn = document.getElementById('btn-close-gallery');
     const modalOverlay = document.getElementById('gallery-modal-overlay');
 
     const modalEmojis = ['🧸', '🍕', '🍿', '✈️', '🍦', '🌅'];
 
+    // Romantic love comments per photo index
+    const loveComments = [
+        "Aku inget banget momen ini! Kamu lucu banget waktu itu, pipimu merah pas aku godain. Selamanya bakal jadi salah satu memori terindahku... ❤️",
+        "Momen yang selalu bikin aku tersenyum kalo ingat. Kamu emang selalu bikin hari-hariku lebih berwarna! 💕",
+        "Ini salah satu kenangan terbaik aku bersamamu. Gak akan pernah aku lupakan, sayang! 🥰",
+        "Kamu tahu gak sih, tiap kali liat foto ini aku selalu senyum-senyum sendiri? Hehe love you! 😘",
+        "Perjalanan kita yang paling berharga. Dari sini kita mulai, dan aku mau terus bersamamu selamanya! 💖",
+        "Foto ini bukti kalau emang kita cocok banget sama-sama. Selalu sama kamu, selalu bahagia! 🌹",
+        "Momen kecil yang jadi kenangan besar buat aku. Terima kasih udah jadi bagian dari hidupku! 💝",
+        "Ingat gak sih waktu itu? Aku masih inget sampai sekarang, dan itu salah satu hari terbaik dalam hidupku! ✨"
+    ];
+
     const openLightbox = (imagePath, caption, index) => {
         if (!modal) return;
         
-        modalCaption.innerText = caption;
+        // Set caption dari database
+        modalCaption.innerText = caption || 'Memory kita bersama 💕';
+        
+        // Set love comment sesuai index foto
+        if (modalLoveComment) {
+            modalLoveComment.innerText = loveComments[index % loveComments.length];
+        }
 
         if (imagePath && imagePath.length > 0) {
             // Show loading state
