@@ -2,8 +2,32 @@
     <!-- 1. Cinematic Opening Loading Screen -->
     <x-cinematic-loader :config="$config" />
 
+    <!-- Floating Romantic Background Elements (all pages) -->
+    <div id="romantic-bg-elements" class="fixed inset-0 pointer-events-none z-[1] overflow-hidden">
+        <!-- Soft gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-pink-50/[0.03] via-transparent to-rose-50/[0.02]"></div>
+        
+        <!-- Floating hearts - subtle, slow -->
+        <div class="absolute top-[5%] left-[3%] text-pink-300/10 animate-float-slow" style="animation-duration: 12s; font-size: 24px;">💕</div>
+        <div class="absolute top-[15%] right-[5%] text-rose-300/10 animate-float-fast" style="animation-duration: 10s; animation-delay: 2s; font-size: 20px;">💗</div>
+        <div class="absolute top-[30%] left-[8%] text-pink-200/8 animate-float-slow" style="animation-duration: 14s; animation-delay: 4s; font-size: 18px;">✨</div>
+        <div class="absolute top-[50%] right-[3%] text-rose-200/8 animate-float-fast" style="animation-duration: 11s; animation-delay: 1s; font-size: 22px;">🌸</div>
+        <div class="absolute top-[70%] left-[5%] text-pink-300/10 animate-float-slow" style="animation-duration: 13s; animation-delay: 3s; font-size: 16px;">💖</div>
+        <div class="absolute top-[85%] right-[8%] text-rose-300/8 animate-float-fast" style="animation-duration: 15s; animation-delay: 5s; font-size: 20px;">🌷</div>
+        <div class="absolute top-[40%] left-[95%] text-pink-200/6 animate-float-slow" style="animation-duration: 16s; animation-delay: 7s; font-size: 14px;">⭐</div>
+        <div class="absolute top-[60%] left-[2%] text-rose-200/6 animate-float-fast" style="animation-duration: 9s; animation-delay: 6s; font-size: 16px;">🩷</div>
+        <div class="absolute top-[25%] left-[50%] text-pink-200/5 animate-float-slow" style="animation-duration: 18s; animation-delay: 8s; font-size: 20px;">💫</div>
+        <div class="absolute top-[90%] left-[30%] text-rose-200/6 animate-float-fast" style="animation-duration: 12s; animation-delay: 2.5s; font-size: 18px;">🎀</div>
+        <div class="absolute top-[10%] left-[70%] text-pink-300/8 animate-float-slow" style="animation-duration: 14s; animation-delay: 4.5s; font-size: 16px;">💕</div>
+        
+        <!-- Glowing orbs - very subtle -->
+        <div class="absolute top-[20%] left-[15%] w-[400px] h-[400px] bg-pink-200/[0.04] rounded-full blur-[120px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute top-[60%] right-[10%] w-[350px] h-[350px] bg-rose-200/[0.04] rounded-full blur-[100px] animate-pulse" style="animation-duration: 10s; animation-delay: 3s;"></div>
+        <div class="absolute top-[80%] left-[40%] w-[300px] h-[300px] bg-fuchsia-200/[0.03] rounded-full blur-[80px] animate-pulse" style="animation-duration: 12s; animation-delay: 5s;"></div>
+    </div>
+
     <!-- Main Surprise Content (Loaded initially hidden, revealed smoothly after loader entry) -->
-    <div id="app-content" class="opacity-0 hidden w-full">
+    <div id="app-content" class="opacity-0 hidden w-full relative z-[2]">
         <!-- 2. Fullscreen Parallax Hero Banner -->
         <x-hero-section :config="$config" />
 

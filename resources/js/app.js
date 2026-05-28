@@ -718,23 +718,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const openLightbox = (imagePath, caption, index) => {
         if (!modal) return;
         
+        modalCaption.innerText = caption;
+
         if (imagePath && imagePath.length > 0) {
-            modalImg.src = imagePath;
-            modalImg.classList.remove('hidden');
-            modalFallback.classList.add('hidden');
+            // Show loading state
+            modalImg.src = '';
+            modalImg.classList.add('hidden');
+            modalFallback.classList.remove('hidden');
+            modalFallbackEmoji.innerText = '⏳';
             
-            modalImg.onerror = () => {
+            // Preload image
+            const img = new Image();
+            img.onload = () => {
+                modalImg.src = imagePath;
+                modalImg.classList.remove('hidden');
+                modalFallback.classList.add('hidden');
+            };
+            img.onerror = () => {
                 modalImg.classList.add('hidden');
                 modalFallback.classList.remove('hidden');
                 modalFallbackEmoji.innerText = modalEmojis[index % modalEmojis.length];
             };
+            img.src = imagePath;
         } else {
             modalImg.classList.add('hidden');
+            modalImg.src = '';
             modalFallback.classList.remove('hidden');
             modalFallbackEmoji.innerText = modalEmojis[index % modalEmojis.length];
         }
-
-        modalCaption.innerText = caption;
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -745,7 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         
         gsap.fromTo(modal.querySelector('.glassmorphism'), 
-            { scale: 0.85, y: 30 }, 
+            { scale: 0.85, y: 30 },
             { scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }
         );
     };
@@ -759,22 +770,42 @@ document.addEventListener('DOMContentLoaded', () => {
             onComplete: () => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
+                modalImg.src = ''; // cleanup
             }
         });
     };
 
+    // Gallery polaroid click - data is on the frame itself
     const frames = document.querySelectorAll('.polaroid-item .polaroid-frame');
     frames.forEach(frame => {
         frame.addEventListener('click', () => {
-            const imagePath = frame.parentElement.getAttribute('data-image-path');
-            const caption = frame.parentElement.getAttribute('data-caption');
-            const index = parseInt(frame.parentElement.getAttribute('data-index')) || 0;
+            const imagePath = frame.getAttribute('data-image-path');
+            const caption = frame.getAttribute('data-caption');
+            const index = parseInt(frame.getAttribute('data-index')) || 0;
             openLightbox(imagePath, caption, index);
+        });
+    });
+
+    // Hero polaroid click - open lightbox too
+    const heroFrames = document.querySelectorAll('#hero-section .polaroid-frame');
+    heroFrames.forEach(frame => {
+        frame.addEventListener('click', () => {
+            const img = frame.querySelector('img');
+            const caption = frame.querySelector('p')?.innerText || '';
+            const imagePath = img && !img.classList.contains('hidden') ? img.src : '';
+            openLightbox(imagePath, caption, 0);
         });
     });
 
     if (closeGalleryBtn) closeGalleryBtn.addEventListener('click', closeLightbox);
     if (modalOverlay) modalOverlay.addEventListener('click', closeLightbox);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            closeLightbox();
+        }
+    });
 
     // --------------------------------------------------------------------------
     // 11. 3D TILT WHY I LOVE YOU CARDS
