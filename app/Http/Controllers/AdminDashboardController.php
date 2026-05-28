@@ -42,7 +42,8 @@ class AdminDashboardController extends Controller
             'partner_name' => 'required|string|max:50',
             'anniversary_date' => 'required|string',
             'birth_date' => 'required|date',
-            'music_url' => 'required|string',
+            'music_url' => 'nullable|string',
+            'music_file' => 'nullable|file|mimes:mp3,mpeg|max:15360',
             'letter_text' => 'required|string',
             'gift_title' => 'required|string|max:100',
             'gift_subtitle' => 'required|string|max:200',
@@ -54,6 +55,20 @@ class AdminDashboardController extends Controller
             'hero_subtitle_content' => 'nullable|string|max:200',
             'hero_subtitle_id' => 'nullable|integer',
         ]);
+
+        // Handle music file upload
+        if ($request->hasFile('music_file')) {
+            $file = $request->file('music_file');
+            $filename = 'music_' . time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('audio');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+            $file->move($destinationPath, $filename);
+            $data['music_url'] = '/audio/' . $filename;
+        } else {
+            $data['music_url'] = $request->input('music_url', '');
+        }
 
         foreach ($data as $key => $value) {
             if (!in_array($key, ['hero_title_content', 'hero_title_id', 'hero_subtitle_content', 'hero_subtitle_id'])) {

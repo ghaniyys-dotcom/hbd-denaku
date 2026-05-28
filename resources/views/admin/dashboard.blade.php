@@ -137,7 +137,7 @@
                         <p class="font-cute text-xs text-pink-300/40">Semua konfigurasi umum website. Scroll ke bawah, lalu klik <strong>Save All</strong> untuk menyimpan sekaligus.</p>
                     </div>
 
-                    <form id="form-general-all" action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6">
+                    <form id="form-general-all" action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         
                         <!-- Section: Identitas -->
@@ -159,9 +159,18 @@
                                 <span class="text-[10px] text-pink-300/40 mt-1 block">Format: YYYY-MM-DDTHH:MM:SS (Contoh: 2023-10-17T01:58:00)</span>
                             </div>
                             <div>
-                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">Musik MP3 URL/Path</label>
-                                <input type="text" name="music_url" value="{{ $settings['music_url'] ?? '' }}" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-cute">
-                                <span class="text-[10px] text-pink-300/40 mt-1 block">Upload file via FTP ke public/audio/ lalu isi path-nya</span>
+                                <label class="block font-cute text-xs font-semibold text-pink-200 uppercase tracking-wider mb-2">🎵 Upload Musik MP3</label>
+                                <input type="file" name="music_file" accept="audio/mpeg,.mp3" class="w-full text-xs text-pink-200 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-500 file:text-white hover:file:bg-pink-600 file:cursor-pointer mb-2">
+                                <input type="hidden" name="music_url" value="{{ $settings['music_url'] ?? '' }}">
+                                @if(!empty($settings['music_url']))
+                                <div class="flex items-center gap-3 mt-2">
+                                    <audio controls preload="none" class="h-8 w-48 opacity-75 hover:opacity-100 transition-opacity">
+                                        <source src="{{ $settings['music_url'] }}" type="audio/mpeg">
+                                    </audio>
+                                    <span class="text-[10px] text-pink-300/50 truncate max-w-[200px]">{{ basename($settings['music_url'] ?? '') }}</span>
+                                </div>
+                                @endif
+                                <span class="text-[10px] text-pink-300/40 mt-1 block">Pilih file MP3. Maksimal 15MB. Musik saat ini: {{ $settings['music_url'] ?? 'belum ada' }}</span>
                             </div>
                         </div>
 
@@ -820,12 +829,15 @@
 
                     try {
                         const formData = new FormData(form);
+                        // Get CSRF token from the form's hidden input
+                        const csrfToken = form.querySelector('input[name="_token"]')?.value || '';
                         const response = await fetch(form.action, {
                             method: 'POST',
                             body: formData,
                             headers: {
                                 'Accept': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': csrfToken,
                             },
                         });
 
