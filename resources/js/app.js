@@ -405,61 +405,42 @@ document.addEventListener('DOMContentLoaded', () => {
             playMusic();
         }
 
-        // Step 1: Fade out loader text content first
-        gsap.to(loaderEl.querySelector('.relative.z-10'), {
+        // Simple smooth transition: fade out loader → remove → fade in content
+        gsap.to(loaderEl, {
             opacity: 0,
-            duration: 0.4,
-            ease: 'power2.in',
+            duration: 0.8,
+            ease: 'power2.inOut',
             onComplete: () => {
-                // Step 2: Sparkle burst
-                const sparkles = document.getElementById('curtain-sparkles');
-                if (sparkles) gsap.to(sparkles, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+                loaderEl.remove();
 
-                // Step 3: Curtain opens (left slides left, right slides right)
-                const curtainLeft = document.getElementById('curtain-left');
-                const curtainRight = document.getElementById('curtain-right');
+                contentEl.classList.remove('hidden');
+                gsap.fromTo(contentEl,
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }
+                );
 
-                if (curtainLeft && curtainRight) {
-                    gsap.to(curtainLeft, {
-                        x: '-100%',
-                        duration: 1.6,
-                        ease: 'power3.inOut',
+                const player = document.getElementById('floating-music-player');
+                if (player) {
+                    gsap.to(player, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: 'back.out(1.5)',
+                        delay: 0.5
                     });
-                    gsap.to(curtainRight, {
-                        x: '100%',
-                        duration: 1.6,
-                        ease: 'power3.inOut',
-                    });
-
-                    // Confetti burst as curtain opens
-                    setTimeout(() => {
-                        confetti({
-                            particleCount: 60,
-                            spread: 80,
-                            origin: { y: 0.5 },
-                            colors: ['#ff85a1', '#ffb7c5', '#ffd1dc', '#ff69b4', '#dda0dd']
-                        });
-                    }, 400);
                 }
 
-                // Step 4: After curtain fully open, remove loader & reveal content
+                runHeroTypewriter();
+
+                // Confetti burst!
                 setTimeout(() => {
-                    loaderEl.remove();
-
-                    contentEl.classList.remove('hidden');
-                    contentEl.style.opacity = '1';
-
-                    const player = document.getElementById('floating-music-player');
-                    if (player) {
-                        player.style.opacity = '1';
-                        player.style.transform = 'none';
-                    }
-
-                    runHeroTypewriter();
-
-                    // Fade out sparkles
-                    if (sparkles) gsap.to(sparkles, { opacity: 0, duration: 0.5 });
-                }, 1800);
+                    confetti({
+                        particleCount: 80,
+                        spread: 90,
+                        origin: { y: 0.4 },
+                        colors: ['#ff85a1', '#ffb7c5', '#ffd1dc', '#ff69b4', '#dda0dd', '#fbbf24']
+                    });
+                }, 300);
             }
         });
     };
